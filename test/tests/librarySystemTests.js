@@ -14,15 +14,21 @@ QUnit.test( "It can fetch libraries with dependancies", function( assert ) {
     assert.ok( librarySystem('workBlurb') === "Gordon works at Watch and Code", "Fetched 'workBlurb' library" );
 });
 
-QUnit.test( "It can fetch libraries with dependancies called in the incorrect sequential order", function( assert ) {
+QUnit.test( "It can fetch libraries with dependencies called in the incorrect sequential order", function( assert ) {
+
     clearLibraryStorage();
-    librarySystem('name', [], function() {return 'Gordon';});
-    librarySystem('company', [], function() {return 'Watch and Code';});
-    librarySystem('workBlurb', ['name', 'company'], function(name, company) {return name + ' works at ' + company;});
+    librarySystem('workBlurb', ['name', 'company'], function(name, company) {
+    return name + ' works at ' + company;
+    });
+    librarySystem('name', [], function() {
+    return 'Gordon';
+    });
+    librarySystem('company', [], function() {
+    return 'Watch and Code';
+    });
+
 
     assert.ok( librarySystem('workBlurb') === "Gordon works at Watch and Code", "Fetched 'workBlurb' library" );
-    assert.ok( librarySystem('name') === "Gordon", "Fetched 'name' library" );
-    assert.ok( librarySystem('company') === "Watch and Code", "Fetched 'company' library" );
 });
 
 QUnit.test( "Callbacks are limited to only running once", function( assert ) {
